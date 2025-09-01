@@ -19,32 +19,46 @@
                 </button>
             </div>
         </div>
-
-        <form novalidate>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        <form action="{{ route('doctors.store') }}" method="POST" novalidate enctype="multipart/form-data">
+            @csrf
             <div class="form-group">
                 <label for="name" class="form-label">Name</label>
-                <input type="name" name="name" class="form-input" placeholder="Enter your name" />
+                <input type="text" name="name" class="form-input" placeholder="Enter Doctor's name" />
+            </div>
+
+            <div class="form-group">
+                <label for="specialization" class="form-label">Specialization</label>
+                <input type="text" name="specialization" class="form-input" placeholder="Enter Doctor's specialization" />
             </div>
 
             <div class="form-group">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" name="email" class="form-input" placeholder="Enter your email" />
+                <input type="email" name="email" class="form-input" placeholder="Enter Doctor's email" />
             </div>
 
             <div class="form-group">
                 <label for="phone" class="form-label">Phone</label>
-                <input type="phone" name="phone" class="form-input" placeholder="Enter your phone" />
+                <input type="phone" name="phone" class="form-input" placeholder="Enter Doctor's phone" />
             </div>
             <div class="form-group">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" class="form-input" placeholder="Enter your password" />
+                <input type="password" name="password" class="form-input" placeholder="Enter password" />
             </div>
             <div class="form-group">
-                <label for="image" class="form-label">Image</label>
-                <input type="file" name="image" class="form-input" placeholder="Enter your image" />
+                <label for="photo" class="form-label">Image</label>
+                <input type="file" name="photo" class="form-input" placeholder="Enter Doctor's image" />
             </div>
 
-            <button type="submit" class="login-btn">Edit</button>
+            <button type="submit" class="login-btn">Add</button>
         </form>
     </main>
 @endsection

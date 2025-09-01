@@ -8,13 +8,13 @@
                 <div class="nav-section-title">Doctors</div>
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <a href="./doctors.html" class="nav-link active">
+                        <a href="{{ route('doctors.index') }}" class="nav-link active">
                             <span class="nav-icon">👨‍⚕️</span>
                             Doctors
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./add_doctor.html" class="nav-link">
+                        <a href="{{ route('doctors.create') }}" class="nav-link">
                             <span class="nav-icon">➕</span>
                             Add Doctor
                         </a>
@@ -25,12 +25,12 @@
             <div class="nav-divider"></div>
 
             <div class="nav-section">
-                <div class="nav-section-title">Users</div>
+                <div class="nav-section-title">Patients</div>
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <a href="./users.html" class="nav-link">
+                        <a href="{{ route('patients.index') }}" class="nav-link">
                             <span class="nav-icon">👥</span>
-                            Users
+                            Patients
                         </a>
                     </li>
                 </ul>

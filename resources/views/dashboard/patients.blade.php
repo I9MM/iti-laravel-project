@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Users Dashboard')
+@section('title', 'Patients Dashboard')
 
 @push('styles')
     <link rel="stylesheet" href="/css/Dashboard/doctors.css" />
@@ -9,7 +9,7 @@
 @section('content')
     <main class="main-content">
         <div class="header">
-            <h1 class="page-title">Users</h1>
+            <h1 class="page-title">Patients</h1>
             <div class="user-info">
                 <span>Dr. Sarah Johnson</span>
                 <button class="logout-btn" id="logout-btn">
@@ -27,20 +27,21 @@
                         <th>Name</th>
                         <th>Phone</th>
                         <th>Email</th>
+                        <th>Image</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="doctorsTableBody">
-                    <tr>
-                        <td>1</td>
-                        <td>Dr. John Smith</td>
-                        <td>01234567891</td>
-                        <td>example@gmail.com</td>
-                        <td>
-                            <button class="btn btn-edit" id="edit-btn">Edit</button>
-                            <button class="btn btn-delete">Delete</button>
-                        </td>
-                    </tr>
+                    @foreach ($patients as $patient)
+                        <tr>
+                            <td>{{ $patient->id }}</td>
+                            <td>{{ $patient->user->name }}</td>
+                            <td>{{ $patient->phone }}</td>
+                            <td>{{ $patient->user->email }}</td>
+                            <td> <img src="/{{ $patient->photo }}" alt="" srcset=""> </td>
+                            <td>Actions</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
