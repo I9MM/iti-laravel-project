@@ -1,0 +1,119 @@
+.first-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin: 10.5rem;
+}
+
+.first-section-about {
+  height: auto;
+}
+.first-section h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.highlight {
+  color: #1a73e8;
+}
+
+.first-section p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+.first-section-image {
+  width: 500px;
+  height: auto;
+}
+
+.first-section-image img {
+  width: 100%;
+  border-radius: 20px 1px;
+}
+
+.middle-section {
+  text-align: center;
+  margin: 4rem 0;
+}
+
+.middle-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.middle-section p {
+  font-size: 1.25rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+.second-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin: 5rem;
+}
+
+.second-section-values {
+  display: flex;
+  justify-content: center;
+}
+
+.second-section-cards {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 2rem;
+}
+
+.second-section-cards:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.second-section-cards h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.second-section-cards p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+.third-section {
+  background-color: #d8e9ff4f;
+  text-align: center;
+  padding: 5rem;
+}
+
+.third-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.third-section p {
+  font-size: 1.25rem;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
+.third-section-btn {
+  background-color: #1a73e8;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+}

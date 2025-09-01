@@ -1,0 +1,110 @@
+body {
+  margin: 0;
+  padding: 0;
+  
+  font-family: 'Inter', sans-serif;
+  background-color: #f0f4f8;
+}
+
+.contact-wrapper {
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 20px;
+  margin-top: 200px;
+}
+
+.contact-card {
+  display: flex;
+  flex-wrap: wrap;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.contact-left, .contact-right {
+  flex: 1;
+  min-width: 300px;
+  padding: 40px;
+}
+
+.contact-left {
+  background: #f9fbfd;
+  border-right: 1px solid #eee;
+}
+
+.contact-left h2 {
+  margin-bottom: 10px;
+  color: #2563eb;
+}
+
+.contact-left .sub {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+label span {
+  color: red;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 14px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.btn-send {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-send:hover {
+  background-color: #1d4ed8;
+}
+
+.contact-right h3 {
+  margin-top: 0;
+  color: #2563eb;
+  margin-bottom: 10px;
+}
+
+.contact-right p {
+  margin-bottom: 20px;
+  font-size: 15px;
+  color: #444;
+}
+
+.social img {
+  margin-right: 12px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.social img:hover {
+  transform: scale(1.1);
+}
+
