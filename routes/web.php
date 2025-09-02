@@ -18,3 +18,21 @@ Route::post('/dashboard/doctors', [DoctorController::class, 'store'])->name('doc
 Route::delete('/dashboard/doctors/{doctor}', [DoctorController::class, 'destroy'])->name('doctors.destroy');
 Route::get('/dashboard/doctors/{doctor}/edit', [DoctorController::class, 'edit'])->name('doctors.edit');
 Route::put('/dashboard/doctors/{doctor}', [DoctorController::class, 'update'])->name('doctors.update');
+
+
+// login & signup
+
+Route::get('/signup', [App\Http\Controllers\Auth\SignupController::class, 'showSignupForm'])->name('signup');
+Route::post('/signup', [App\Http\Controllers\Auth\SignupController::class, 'signup'])->name('signup.submit');
+Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login.submit');
+
+// --
+Route::get('/find-doctors', [App\Http\Controllers\Dashboard\DoctorController::class, 'showdoc'])->name('find_doctors');
+Route::get('/appointment/create', [App\Http\Controllers\AppointmentController::class, 'create'])
+    ->middleware('auth')
+    ->name('appointment.create');
+
+Route::post('/appointment', [App\Http\Controllers\AppointmentController::class, 'store'])
+    ->middleware('auth')
+    ->name('appointment.store');
