@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,7 +10,7 @@
   <body>
     <div class="login-container">
       <div class="login-container-left">
-        <a href="#" class="logo">
+        <a href="{{ route('home') }}" class="logo">
           <div class="logo-icon">D</div>
           DocPlace
         </a>
@@ -27,7 +28,6 @@
                           </li>
                       @endforeach
                   </ul>
-              </div>
           @endif
 
           <form method="POST" action="{{ route('login.submit') }}">
@@ -39,6 +39,8 @@
                 name="email"
                 class="form-input"
                 placeholder="Enter your email"
+                value="{{ old('email') }}"
+                required
               />
             </div>
 
@@ -49,6 +51,7 @@
                 name="password"
                 class="form-input"
                 placeholder="Enter your password"
+                required
               />
             </div>
 

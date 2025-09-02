@@ -1,7 +1,7 @@
 <footer class="footer">
       <div class="footer-top">
         <div class="footer-card">
-          <a href="#" class="logo">
+          <a href="{{ route('home') }}" class="logo">
             <div class="logo-icon">D</div>
             <span class="logo-footer">DocPlace</span>
           </a>
@@ -10,19 +10,19 @@
             medical services with compassionate <br />care for over 15 years.
           </p>
           <div>
-            <a><img src="../assets/images/facbook.png" /></a>
-            <a><img src="../assets/images/twitter.png" /></a>
-            <a><img src="../assets/images/instagram.png" /></a>
-            <a><img src="../assets/images/linkedin.png" /></a>
+            <a><img src="{{ asset('assets/images/facebook.png') }}" /></a>
+            <a><img src="{{ asset('assets/images/twitter.png') }}" /></a>
+            <a><img src="{{ asset('assets/images/instagram.png') }}" /></a>
+            <a><img src="{{ asset('assets/images/linkedin.png') }}" /></a>
           </div>
         </div>
         <div class="footer-card">
           <h3>Quick Links</h3>
           <ul class="footer-links">
-            <li><a href="./index.html">Home</a></li>
-            <li><a href="./find_doctors.html">Find Doctors</a></li>
-            <li><a href="./about_us.html">About</a></li>
-            <li><a href="./contact_us.html">Contact</a></li>
+            <li><a href="{{ route('home') }}">Home</a></li>
+            <li><a href="{{ route('find_doctors') }}">Find Doctors</a></li>
+            <li><a href="{{ route('about_us') }}">About</a></li>
+            <li><a href="{{ route('contact_us') }}">Contact</a></li>
           </ul>
         </div>
         <div class="footer-card">
