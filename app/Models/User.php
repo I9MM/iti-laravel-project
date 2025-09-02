@@ -22,6 +22,8 @@ class User extends Authenticatable
         'email',
         'role',
         'password',
+        'phone',
+        'photo',
     ];
 
     /**
@@ -35,14 +37,19 @@ class User extends Authenticatable
     ];
 
 
-    public function doctor()
+    public function specialization()
     {
-        return $this->hasOne(Doctor::class);
+        return $this->hasOne(Specialization::class);
     }
 
-    public function patient()
+    public function doctorAppointments()
     {
-        return $this->hasOne(Patient::class);
+        return $this->hasMany(Appointment::class, 'doctor_id');
+    }
+
+    public function patientAppointments()
+    {
+        return $this->hasMany(Appointment::class, 'patient_id');
     }
 
 

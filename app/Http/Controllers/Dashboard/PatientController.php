@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Patient;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PatientController extends Controller
 {
     public function index() {
-        $patients = Patient::with('user')->get();
+        $patients = User::where('role', 'patient')->get();
         return view('dashboard.patients', compact('patients'));
     }
 }

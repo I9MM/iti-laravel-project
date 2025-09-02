@@ -20,6 +20,11 @@
         </div>
 
         <div class="table-container">
+            @if (Session::has('msg'))
+                <div class="alert alert-success">
+                    {{ Session::get('msg') }}
+                </div>
+            @endif
             <table class="doctors-table" id="doctorsTable">
                 <thead>
                     <tr>
@@ -36,14 +41,16 @@
                     @foreach ($doctors as $doctor)
                         <tr>
                             <td>{{ $doctor->id }}</td>
-                            <td> <img src="{{ asset('/storage/' . $doctor->photo) }}" alt="" srcset="" style="height: 50px; width: 50px"> </td>
-                            <td>{{ $doctor->user->name }}</td>
-                            <td>{{ $doctor->specialization }}</td>
-                            <td>{{ $doctor->user->email }}</td>
-                            <td>{{ $doctor->phone?? 'Not Available' }}</td>
+                            <td> <img src="{{ asset('/storage/' . $doctor->photo) }}" alt="" srcset=""
+                                    style="height: 50px; width: 50px"> </td>
+                            <td>{{ $doctor->name }}</td>
+                            <td>{{ $doctor->specialization->name }}</td>
+                            <td>{{ $doctor->email }}</td>
+                            <td>{{ $doctor->phone ?? 'Not Available' }}</td>
                             <td>
                                 <a class="btn btn-edit" href="{{ route('doctors.edit', $doctor) }}">Edit</a>
-                                <form action="{{ route('doctors.destroy', $doctor) }}" method="POST" style="display: inline">
+                                <form action="{{ route('doctors.destroy', $doctor) }}" method="POST"
+                                    style="display: inline">
                                     @csrf
                                     @method('delete')
                                     <button type="submit" class="btn btn-delete">Delete</button>

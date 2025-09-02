@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Doctor;
+use App\Models\Specialization;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 class DoctorController extends Controller
 {
     public function index() {
-        $doctors = Doctor::with('user')->get();
+        $doctors = User::where('role', 'doctor')->with('specialization')->get();
         return view('dashboard.doctors.index', compact('doctors'));
     }
 
@@ -24,64 +24,67 @@ class DoctorController extends Controller
             'name' => 'required',
             'email' => 'required|unique:users,email',
             'password' => 'required|min:8',
-        ]);
-
-        $doctorVlaidated = $request->validate([
-            'specialization' => 'required',
-            'phone' => ['nullable', 'regex:/^(010|011|012|015)\d{8}$/', 'unique:doctors,phone'],
+            'phone' => ['nullable', 'regex:/^(010|011|012|015)\d{8}$/', 'unique:users,phone'],
             'photo' => 'nullable|image',
+        ]);
+        $userValidated['role'] = 'doctor';
+
+        $request->validate([
+            'specialization' => 'required',
         ]);
 
         if ($request->has('photo')) {
             $ext = $request->file('photo')->getClientOriginalExtension();
             $photoName = $userValidated['email'] . '.' . $ext;
             $photo = $request->file('photo')->storeAs('images', $photoName);
-            $doctorVlaidated['photo'] = $photo;
+            $userValidated['photo'] = $photo;
         }
         
         $user = User::create($userValidated);
-        $doctorVlaidated['user_id'] = $user->id;
-        $doctor = Doctor::create($doctorVlaidated);
+        $specializationValidated['user_id'] = $user->id;
+        $specializationValidated['name'] = $request->specialization;
+        $specialization = Specialization::create($specializationValidated);
         return redirect()->route('doctors.index')->with('msg', 'Doctor Added Successfuly');
     }
 
-    public function edit(Doctor $doctor) {
-        $doctor->load('user');
+    public function edit(User $doctor) {
+        $doctor->load('specialization');
         return view('dashboard.doctors.edit', compact('doctor'));
     }
 
-    public function update(Request $request, Doctor $doctor) {
+    public function update(Request $request, User $doctor) {
         $userValidated = $request->validate([
             'name' => 'required',
-            'email' => ['required', 'unique:users,email,' . $doctor->user->id],
-        ]);
-
-        $doctorVlaidated = $request->validate([
-            'specialization' => 'required',
-            'phone' => ['nullable', 'regex:/^(010|011|012|015)\d{8}$/', 'unique:doctors,phone,' . $doctor->id],
+            'email' => ['required', 'unique:users,email,' . $doctor->id],
+            'phone' => ['nullable', 'regex:/^(010|011|012|015)\d{8}$/', 'unique:users,phone,' . $doctor->id],
             'photo' => 'nullable|image',
+        ]);
+        $userValidated['role'] = 'doctor';
+
+        $request->validate([
+            'specialization' => 'required',
         ]);
 
         if ($request->has('photo')) {
             $ext = $request->file('photo')->getClientOriginalExtension();
             $photoName = $userValidated['email'] . '.' . $ext;
             $photo = $request->file('photo')->storeAs('images', $photoName);
-            $doctorVlaidated['photo'] = $photo;
+            $userValidated['photo'] = $photo;
         }
 
-        $doctor->user->update($userValidated);
-        $doctor->update($doctorVlaidated);
+        $doctor->update($userValidated);
+        $doctor->specialization->update(['name' => $request->specialization]);
         return redirect()->route('doctors.index')->with('msg', 'Doctor Edited Successfuly');
     }
 
-    public function destroy(Doctor $doctor) {
+    public function destroy(User $doctor) {
         if (!empty($doctor->photo) && Storage::exists($doctor->photo)) {
             Storage::delete($doctor->photo);
             if (empty(Storage::files('images'))) {
                 Storage::deleteDirectory('images');
             }
         }
-        $doctor->user->delete();
+        $doctor->delete();
         return redirect()->route('doctors.index')->with('msg', 'Doctor Deleted Successfuly');
     }
 }

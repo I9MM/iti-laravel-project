@@ -35,10 +35,10 @@
                     @foreach ($patients as $patient)
                         <tr>
                             <td>{{ $patient->id }}</td>
-                            <td>{{ $patient->user->name }}</td>
+                            <td>{{ $patient->name }}</td>
                             <td>{{ $patient->phone }}</td>
-                            <td>{{ $patient->user->email }}</td>
-                            <td> <img src="/{{ $patient->photo }}" alt="" srcset=""> </td>
+                            <td>{{ $patient->email }}</td>
+                            <td> <img src="{{ asset('/storage/' . $patient->photo) }}" alt="" srcset="" style="height: 50px; width: 50px"> </td>
                             <td>Actions</td>
                         </tr>
                     @endforeach
