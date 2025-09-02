@@ -13,8 +13,8 @@
 
         <div class="nav-buttons">
           @guest
-            <button class="signup-btn" id="sign-up-btn">Sign Up</button>
-            <button class="login-btn" id="login-btn">Login</button>
+            <button class="signup-btn" id="sign-up-btn" onclick="window.location.href='{{ route('signup') }}'">Sign Up</button>
+            <button class="login-btn" id="login-btn" onclick="window.location.href='{{ route('login') }}'">Login</button>
           @else
             <div class="user-menu">
               <button class="user-btn">{{ auth()->user()->name }}</button>
