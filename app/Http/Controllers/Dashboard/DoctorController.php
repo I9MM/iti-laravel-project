@@ -87,4 +87,9 @@ class DoctorController extends Controller
         $doctor->delete();
         return redirect()->route('admin.doctors.index')->with('msg', 'Doctor Deleted Successfuly');
     }
+
+    public function showdoc() {
+        $doctors = User::where('role', 'doctor')->with('specialization')->get();
+        return view('find_doctors', compact('doctors'));
+    }
 }

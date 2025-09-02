@@ -51,9 +51,9 @@
                 <p>customercare@medico.com</p>
 
                 <div class="social">
-                    <a href="#"><img src="/assets/images/facbook.png" alt="Facebook" /></a>
-                    <a href="#"><img src="/assets/images/instagram.png" alt="Instagram" /></a>
-                    <a href="#"><img src="/assets/images/twitter.png" alt="Twitter" /></a>
+                    <a href="#"><img src="{{ asset('assets/images/facbook.png') }}" alt="Facebook" /></a>
+                    <a href="#"><img src="{{ asset('assets/images/instagram.png') }}" alt="Instagram" /></a>
+                    <a href="#"><img src="{{ asset('assets/images/twitter.png') }}" alt="Twitter" /></a>
                 </div>
             </div>
         </div>
@@ -63,10 +63,10 @@
 @push('scripts')
     <script>
         document.getElementById("sign-up-btn").addEventListener("click", function() {
-            window.location.href = "signup.html";
+            window.location.href = "{{ route('signup') }}";
         });
         document.getElementById("login-btn").addEventListener("click", function() {
-            window.location.href = "login.html";
+            window.location.href = "{{ route('login') }}";
         });
     </script>
 @endpush

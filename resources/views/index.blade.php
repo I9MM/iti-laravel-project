@@ -60,7 +60,7 @@
                 <li>Personalized care plans</li>
                 <li>Emergency services available</li>
             </ul>
-            <buttin class="third-section-button" id="learn-more-btn"><a href="#">Learn More About Us</a></buttin>
+            <button class="third-section-button" id="learn-more-btn"><a href="{{ route('about_us') }}">Learn More About Us</a></button>
         </div>
     </section>
 
@@ -75,59 +75,58 @@
     <div class="fourth-section">
         <div class="fourth-section-card">
             <div class="doctor-card">
-                <image src="/assets/images/doctor1.jpg" alt="doctor image" />
+                <img src="/assets/images/doctor1.jpg" alt="doctor image" />
                 <h3>Dr. Sarah Johnson</h3>
                 <p>Cardiologist</p>
                 <div><span>⭐</span>4.9 (127)</div>
                 <div><span>📍</span>Medical Center East</div>
                 <div>
                     <button class="fourth-section-button" id="doctor-btn">
-                        <a href="./appointment.html">Book appointment</a>
+                        <a href="{{ route('appointment.create') }}">Book appointment</a>
                     </button>
                 </div>
             </div>
             <div class="doctor-card">
-                <image src="/assets/images/doctor2.jpg" alt="doctor image" />
+                <img src="/assets/images/doctor2.jpg" alt="doctor image" />
                 <h3>Dr. Michael Chen</h3>
                 <p>Neurologist</p>
                 <div><span>⭐</span>4.8 (98)</div>
                 <div><span>📍</span>Downtown Clinic</div>
                 <div>
                     <button class="fourth-section-button" id="doctor-btn">
-                        <a href="./appointment.html">Book appointment</a>
+                        <a href="{{ route('appointment.create') }}">Book appointment</a>
                     </button>
                 </div>
             </div>
             <div class="doctor-card">
-                <image src="/assets/images/doctor3.jpg" alt="doctor image" />
+                <img src="/assets/images/doctor3.jpg" alt="doctor image" />
                 <h3>Dr. Emily Rodriguez</h3>
-                <p>Dariatricion</p>
+                <p>Dermatologist</p>
                 <div><span>⭐</span>4.9 (156)</div>
                 <div><span>📍</span>Children's Hospital</div>
                 <div>
                     <button class="fourth-section-button" id="doctor-btn">
-                        <a href="./appointment.html">Book appointment</a>
+                        <a href="{{ route('appointment.create') }}">Book appointment</a>
                     </button>
                 </div>
             </div>
             <div class="doctor-card">
-                <image src="/assets/images/doctor4.jpg" alt="doctor image" />
+                <img src="/assets/images/doctor4.jpg" alt="doctor image" />
                 <h3>Dr. David Kim</h3>
                 <p>Dermatologist</p>
                 <div><span>⭐</span>4.7 (89)</div>
                 <div><span>📍</span>Skin Care Center</div>
                 <div>
                     <button class="fourth-section-button" id="doctor-btn">
-                        <a href="./appointment.html">Book appointment</a>
+                        <a href="{{ route('appointment.create') }}">Book appointment</a>
                     </button>
                 </div>
             </div>
-
         </div>
     </div>
 
     <div class="fourth-section-after">
-        <button class="fourth-section-button-after" id="find-doctor-btn">
+        <button class="fourth-section-button-after" id="find_doctor-btn">
             <a href="{{ route('find_doctors') }}">Find Doctors</a>
         </button>
     </div>
@@ -242,18 +241,19 @@
 @push('scripts')
     <script>
         document.getElementById("sign-up-btn").addEventListener("click", function() {
-            window.location.href = "{{ route('signup') }}";});
+            window.location.href = "{{ route('signup') }}";
+        });
         document.getElementById("login-btn").addEventListener("click", function() {
             window.location.href = "{{ route('login') }}";
         });
         document.getElementById("learn-more-btn").addEventListener("click", function() {
-            window.location.href = "about_us.html";
+            window.location.href = "{{ route('about_us') }}";
         });
         document.getElementById("doctor-btn").addEventListener("click", function() {
-            window.location.href = "find_doctors.html";
+            window.location.href = "{{ route('find_doctors') }}";
         });
         document.getElementById("find-doctor-btn").addEventListener("click", function() {
-            window.location.href = "find_doctors.html";
+            window.location.href = "{{ route('find_doctors') }}";
         });
         const book = document.querySelectorAll('#doctor-btn');
         const names = document.querySelectorAll('h3');
@@ -261,7 +261,7 @@
             btn.addEventListener('click', function(e) {
                 const doctorName = names[index].textContent;
                 localStorage.setItem('selectedDoctor', doctorName);
-                window.location.href = 'appointment.html';
+                window.location.href = "{{ route('appointment.create') }}";
             });
         });
     </script>

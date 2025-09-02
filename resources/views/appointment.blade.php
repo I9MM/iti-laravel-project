@@ -4,58 +4,59 @@
 
 @push('styles')
     <link rel="stylesheet" href="/css/appointment.css" />
-    <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
 @endpush
 
 @section('content')
     <div class="container">
         <div class="head">
-            <a href="./find_doctors.html" class="back-button"> ← Back </a>
+            <a href="{{ route('find_doctors') }}" class="back-button"> ← Back </a>
             <h1>Book Appointment</h1>
             <p>Schedule your visit with our specialist</p>
         </div>
 
+        @if ($errors->any())
+            <div style="background: #ffe5e5; border: 1px solid #ff4d4d; color: #b30000; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+                <ul style="list-style: none; margin: 0; padding: 0;">
+                    @foreach ($errors->all() as $error)
+                        <li style="margin-bottom: 8px; display: flex; align-items: center;">
+                            <span style="font-weight: bold; margin-right: 8px;">&#9888;</span>
+                            {{ $error }}
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="doctor-info">
-            <div class="doctor-name" id="doctorName"></div>
+            <div class="doctor-name">{{ $doctor->name }}</div>
         </div>
         <div class="form-section">
-            <form id="appointment_form">
-                <div class="form-group">
-                    <label for="patientName">Your Full Name <span class="required">*</span></label>
-                    <input type="text" id="patientName" name="patientName" placeholder="Enter your full name" />
-                </div>
-
-                <div class="form-group">
-                    <label for="phoneNumber">Phone Number <span class="required">*</span></label>
-                    <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" />
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email address" />
-                </div>
+            <form id="appointment_form" method="POST" action="{{ route('appointment.store') }}">
+                @csrf
+                <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
+                <input type="hidden" name="patient_id" value="{{ auth()->user()->id }}">
 
                 <div class="date-time-row">
                     <div class="form-group">
                         <label for="appointmentDate">Preferred Date</label>
-                        <input type="date" id="appointmentDate" name="appointmentDate" />
+                        <input type="date" id="appointmentDate" name="appointmentDate" value="{{ old('appointmentDate') }}" min="{{ date('Y-m-d') }}" max="9999-12-31" required />
                     </div>
                     <div class="form-group">
                         <label for="appointmentTime">Preferred Time</label>
-                        <select id="appointmentTime" name="appointmentTime">
+                        <select id="appointmentTime" name="appointmentTime" required>
                             <option value="">Select a time</option>
-                            <option value="09:00">9:00 AM</option>
-                            <option value="09:30">9:30 AM</option>
-                            <option value="10:00">10:00 AM</option>
-                            <option value="10:30">10:30 AM</option>
-                            <option value="11:00">11:00 AM</option>
-                            <option value="11:30">11:30 AM</option>
-                            <option value="14:00">2:00 PM</option>
-                            <option value="14:30">2:30 PM</option>
-                            <option value="15:00">3:00 PM</option>
-                            <option value="15:30">3:30 PM</option>
-                            <option value="16:00">4:00 PM</option>
-                            <option value="16:30">4:30 PM</option>
+                            <option value="09:00" {{ old('appointmentTime') == '09:00' ? 'selected' : '' }}>9:00 AM</option>
+                            <option value="09:30" {{ old('appointmentTime') == '09:30' ? 'selected' : '' }}>9:30 AM</option>
+                            <option value="10:00" {{ old('appointmentTime') == '10:00' ? 'selected' : '' }}>10:00 AM</option>
+                            <option value="10:30" {{ old('appointmentTime') == '10:30' ? 'selected' : '' }}>10:30 AM</option>
+                            <option value="11:00" {{ old('appointmentTime') == '11:00' ? 'selected' : '' }}>11:00 AM</option>
+                            <option value="11:30" {{ old('appointmentTime') == '11:30' ? 'selected' : '' }}>11:30 AM</option>
+                            <option value="14:00" {{ old('appointmentTime') == '14:00' ? 'selected' : '' }}>2:00 PM</option>
+                            <option value="14:30" {{ old('appointmentTime') == '14:30' ? 'selected' : '' }}>2:30 PM</option>
+                            <option value="15:00" {{ old('appointmentTime') == '15:00' ? 'selected' : '' }}>3:00 PM</option>
+                            <option value="15:30" {{ old('appointmentTime') == '15:30' ? 'selected' : '' }}>3:30 PM</option>
+                            <option value="16:00" {{ old('appointmentTime') == '16:00' ? 'selected' : '' }}>4:00 PM</option>
+                            <option value="16:30" {{ old('appointmentTime') == '16:30' ? 'selected' : '' }}>4:30 PM</option>
                         </select>
                     </div>
                 </div>
@@ -67,40 +68,25 @@
 @endsection
 
 @push('scripts')
-    <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script>
-        document.getElementById("doctorName").textContent = localStorage.getItem('selectedDoctor');
-        const form = document.querySelector('form');
-        const name = document.querySelector('input[name="patientName"]');
-        const email = document.querySelector('input[name="email"]');
-        const phone = document.querySelector('input[name="phoneNumber"]');
-        const date = document.querySelector('input[name="appointmentDate"]');
-        const time = document.querySelector('select[name="appointmentTime"]');
-        const phonepattern = /^(010|011|012|015)[0-9]{8}$/;
-        const emailpattern = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.(com|net|org|edu)$/;
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (name.value !== "" && email.value !== "" && phone.value !== "" && date.value !== "" && time.value !==
-                "") {
-                if (name.value.length >= 3 && isNaN(name.value)) {
-                    if (emailpattern.test(email.value)) {
-                        if (phone.value != '' && phonepattern.test(phone.value)) {
-                            if (date.value !== "" && time.value !== "") {
-                                swal("Good job!", "Appointment Booked Successfully", "success");
-                                form.reset();
-                            }
-                        }
-                    }
+        @if(session('login_required'))
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "You Should login First!",
+                footer: '<a href="{{ route('find_doctors') }}">Ok</a>',
+                showConfirmButton: true,
+                confirmButtonText: 'Login',
+                timer: 10000,
+                timerProgressBar: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "{{ route('login') }}";
+                } else {
+                    window.location.href = "{{ route('find_doctors') }}";
                 }
-            } else {
-                const div = document.createElement('div');
-                document.querySelectorAll('.form-group').forEach(group => group.appendChild(div));
-                div.innerText = "Please fill all required fields correctly.";
-                div.classList.add('error-message');
-                setTimeout(() => {
-                    div.remove();
-                }, 5000);
-            }
-        });
+            });
+        @endif
     </script>
 @endpush

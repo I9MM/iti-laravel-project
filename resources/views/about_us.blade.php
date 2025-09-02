@@ -20,13 +20,13 @@
                 <br />health and wellness.
             </p>
             <p class="first-section-para">
-                ounded with the mission to make quality healthcare <br />accessible
+                Founded with the mission to make quality healthcare <br />accessible
                 and convenient, we combine expert medical care <br />with modern
                 technology to serve our community better.
             </p>
         </div>
         <div class="first-section-image">
-            <img src="/assets/images/hospital.jpg" alt="Doctor image" />
+            <img src="{{ asset('assets/images/hospital.jpg') }}" alt="Doctor image" />
         </div>
     </section>
 
@@ -78,17 +78,17 @@
     <section class="third-section">
         <h2>Ready to Experience Better Healthcare?</h2>
         <p>Join thousands of satisfied patients who trust DocPlace</p>
-        <a href="./find_doctors.html" class="third-section-btn">Find Doctor</a>
+        <a href="{{ route('find_doctors') }}" class="third-section-btn">Find Doctor</a>
     </section>
 @endsection
 
 @push('scripts')
     <script>
         document.getElementById("sign-up-btn").addEventListener("click", function() {
-            window.location.href = "signup.html";
+            window.location.href = "{{ route('signup') }}";
         });
         document.getElementById("login-btn").addEventListener("click", function() {
-            window.location.href = "login.html";
+            window.location.href = "{{ route('login') }}";
         });
     </script>
 @endpush
