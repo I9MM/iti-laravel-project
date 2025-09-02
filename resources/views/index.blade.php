@@ -128,7 +128,7 @@
 
     <div class="fourth-section-after">
         <button class="fourth-section-button-after" id="find-doctor-btn">
-            <a href="./find_doctors.html">Find Doctors</a>
+            <a href="{{ route('find_doctors') }}">Find Doctors</a>
         </button>
     </div>
 
@@ -242,10 +242,9 @@
 @push('scripts')
     <script>
         document.getElementById("sign-up-btn").addEventListener("click", function() {
-            window.location.href = "signup.html";
-        });
+            window.location.href = "{{ route('signup') }}";});
         document.getElementById("login-btn").addEventListener("click", function() {
-            window.location.href = "login.html";
+            window.location.href = "{{ route('login') }}";
         });
         document.getElementById("learn-more-btn").addEventListener("click", function() {
             window.location.href = "about_us.html";
