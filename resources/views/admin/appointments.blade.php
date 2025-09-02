@@ -1,9 +1,8 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Dashboard Overview')
+@section('title', 'Appointments Dashboard')
 
 @push('styles')
-    <link rel="stylesheet" href="/css/Dashboard/dashboard.css" />
     <link rel="stylesheet" href="/css/Dashboard/doctors.css" />
 @endpush
 
@@ -11,39 +10,20 @@
     <main class="main-content">
         <!-- Header -->
         <div class="header">
-            <h1 class="page-title">Dashboard</h1>
+            <h1 class="page-title">Appointments</h1>
             <div class="user-info">
-                <span>Dr. Sarah Johnson</span>
-                <form action="" method="POST" style="display: inline">
+                <span>{{ Auth::user()->name }}</span>
+                <form action="{{ route('logout') }} " method="POST" style="display: inline">
                     @csrf
-                    <button class="logout-btn" id="logout-btn">
+                    <button class="logout-btn" type="submit">
                         <span>🚪</span>
                         Logout
                     </button>
                 </form>
             </div>
         </div>
-
-        <!-- Stats -->
-        <div class="stats-container">
-            <div class="stat-card">
-                <h3>Total Doctors</h3>
-                <p>{{ $doctorsCount }}</p>
-            </div>
-            <div class="stat-card">
-                <h3>Total Patients</h3>
-                <p>{{ $patientsCount }}</p>
-            </div>
-            <div class="stat-card">
-                <h3>Total Appointments</h3>
-                <p>{{ $appointmentsCount }}</p>
-            </div>
-        </div>
-
-        <!-- Recent activity -->
         <div class="table-container">
-            <h2>Recent Appointments</h2>
-            <table class="doctors-table">
+            <table class="doctors-table" id="doctorsTable">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -51,10 +31,11 @@
                         <th>Patient</th>
                         <th>Appointment At</th>
                         <th>Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach ($recentAppointments as $appointment)
+                <tbody id="doctorsTableBody">
+                    @foreach ($appointments as $appointment)
                         <tr>
                             <td>{{ $appointment->id }}</td>
                             <td>{{ $appointment->doctor->name }}</td>
@@ -64,6 +45,24 @@
                                 <span class="status-badge {{ $appointment->status }}">
                                     {{ ucfirst($appointment->status) ?? '—' }}
                                 </span>
+                            </td>
+                            <td>
+                                <form action="{{ route('admin.appointments.update', $appointment) }}" method="POST"
+                                    style="display: inline">
+                                    @csrf
+                                    <button type="submit" name="status" value="done" class="btn btn-done">
+                                        Done
+                                    </button>
+
+                                    <button type="submit" name="status" value="pending" class="btn btn-pending">
+                                        Pending
+                                    </button>
+
+                                    <button type="submit" name="status" value="canceled" class="btn btn-canceled">
+                                        Canceled
+                                    </button>
+                                </form>
+
                             </td>
                         </tr>
                     @endforeach

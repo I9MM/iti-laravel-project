@@ -10,6 +10,6 @@ class PatientController extends Controller
 {
     public function index() {
         $patients = User::where('role', 'patient')->get();
-        return view('dashboard.patients', compact('patients'));
+        return view('admin.patients', compact('patients'));
     }
 }

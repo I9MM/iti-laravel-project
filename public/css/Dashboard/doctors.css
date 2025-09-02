@@ -101,3 +101,43 @@
   background: #dc3545;
   color: white;
 }
+
+
+.btn-done {
+    background-color: #28a745; /* green */
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-pending {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-canceled {
+    background-color: #dc3545; /* red */
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-done:hover {
+    background-color: #218838;
+}
+
+.btn-pending:hover {
+    background: #138496;
+}
+
+.btn-canceled:hover {
+    background-color: #c82333;
+}

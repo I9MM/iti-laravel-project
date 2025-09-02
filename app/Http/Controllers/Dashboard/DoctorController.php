@@ -12,11 +12,11 @@ class DoctorController extends Controller
 {
     public function index() {
         $doctors = User::where('role', 'doctor')->with('specialization')->get();
-        return view('dashboard.doctors.index', compact('doctors'));
+        return view('admin.doctors.index', compact('doctors'));
     }
 
     public function create() {
-        return view('dashboard.doctors.create');
+        return view('admin.doctors.create');
     }
 
     public function store(Request $request) {
@@ -44,12 +44,12 @@ class DoctorController extends Controller
         $specializationValidated['user_id'] = $user->id;
         $specializationValidated['name'] = $request->specialization;
         $specialization = Specialization::create($specializationValidated);
-        return redirect()->route('doctors.index')->with('msg', 'Doctor Added Successfuly');
+        return redirect()->route('admin.doctors.index')->with('msg', 'Doctor Added Successfuly');
     }
 
     public function edit(User $doctor) {
         $doctor->load('specialization');
-        return view('dashboard.doctors.edit', compact('doctor'));
+        return view('admin.doctors.edit', compact('doctor'));
     }
 
     public function update(Request $request, User $doctor) {
@@ -74,7 +74,7 @@ class DoctorController extends Controller
 
         $doctor->update($userValidated);
         $doctor->specialization->update(['name' => $request->specialization]);
-        return redirect()->route('doctors.index')->with('msg', 'Doctor Edited Successfuly');
+        return redirect()->route('admin.doctors.index')->with('msg', 'Doctor Edited Successfuly');
     }
 
     public function destroy(User $doctor) {
@@ -85,6 +85,6 @@ class DoctorController extends Controller
             }
         }
         $doctor->delete();
-        return redirect()->route('doctors.index')->with('msg', 'Doctor Deleted Successfuly');
+        return redirect()->route('admin.doctors.index')->with('msg', 'Doctor Deleted Successfuly');
     }
 }

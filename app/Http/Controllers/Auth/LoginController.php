@@ -21,11 +21,19 @@ class LoginController extends Controller
 
         if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
+            if(Auth::user()->role === 'admin')return redirect()->route('admin.index');
             return redirect()->intended('/');
         }
 
         return back()->withErrors([
             'email' => 'User Not Found',
         ])->withInput();
+    }
+
+    public function logout(Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('login');
     }
 }

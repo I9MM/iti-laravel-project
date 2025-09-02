@@ -9,7 +9,7 @@
         <div class="nav-section-title">Dashboard</div>
         <ul class="nav-menu">
             <li class="nav-item">
-                <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                <a href="{{ route('admin.index') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                     <span class="nav-icon">🏠</span>
                     Overview
                 </a>
@@ -23,13 +23,13 @@
         <div class="nav-section-title">Doctors</div>
         <ul class="nav-menu">
             <li class="nav-item">
-                <a href="{{ route('doctors.index') }}" class="nav-link active">
+                <a href="{{ route('admin.doctors.index') }}" class="nav-link active">
                     <span class="nav-icon">👨‍⚕️</span>
                     Doctors
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('doctors.create') }}" class="nav-link">
+                <a href="{{ route('admin.doctors.create') }}" class="nav-link">
                     <span class="nav-icon">➕</span>
                     Add Doctor
                 </a>
@@ -43,7 +43,7 @@
         <div class="nav-section-title">Patients</div>
         <ul class="nav-menu">
             <li class="nav-item">
-                <a href="{{ route('patients.index') }}" class="nav-link">
+                <a href="{{ route('admin.patients.index') }}" class="nav-link">
                     <span class="nav-icon">👥</span>
                     Patients
                 </a>
@@ -57,7 +57,7 @@
         <div class="nav-section-title">Appointments</div>
         <ul class="nav-menu">
             <li class="nav-item">
-                <a href="./appointments.html" class="nav-link">
+                <a href="{{ route('admin.appointments.index') }}" class="nav-link">
                     <span class="nav-icon">📅</span>
                     Appointments
                 </a>
