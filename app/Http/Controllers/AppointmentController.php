@@ -33,18 +33,21 @@ class AppointmentController extends Controller
             return redirect()->route('find_doctors')->withErrors(['login' => 'You must be logged in to book an appointment.']);
         }
 
+        $maxDate = Carbon::now()->addYears(2)->toDateString();
+
         $request->validate([
             'doctor_id' => 'required|exists:users,id',
             'patient_id' => 'required|exists:users,id',
-            'appointmentDate' => 'required|date|after_or_equal:today|before_or_equal:9999-12-31',
+            'appointmentDate' => "required|date|after_or_equal:today|before_or_equal:$maxDate",
             'appointmentTime' => 'required|string',
         ]);
 
         $appointmentDateTime = $request->appointmentDate . ' ' . $request->appointmentTime;
 
-        $year = date('Y', strtotime($appointmentDateTime));
-        if ($year > 9999) {
-            return redirect()->back()->withErrors(['appointmentDate' => 'Invalid date. Year must be 9999 or less.']);
+        $maxDateTime = Carbon::now()->addYears(2)->endOfDay();
+        $selected = Carbon::parse($appointmentDateTime);
+        if ($selected->gt($maxDateTime)) {
+            return redirect()->back()->withErrors(['appointmentDate' => 'Invalid date. Appointment must be within 2 years from today.'])->withInput();
         }
 
         Appointment::create([
