@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace  App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -10,6 +10,6 @@ class PatientController extends Controller
 {
     public function index() {
         $patients = User::where('role', 'patient')->get();
-        return view('dashboard.patients', compact('patients'));
+        return view('admin.patients', compact('patients'));
     }
 }

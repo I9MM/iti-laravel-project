@@ -1,57 +1,81 @@
 <?php
 
-use App\Http\Controllers\Dashboard\PatientController;
-use App\Http\Controllers\Dashboard\DoctorController;
-use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Admin\AppointmentController as AdminAppointmentController;
+use App\Http\Controllers\Admin\PatientController;
+use App\Http\Controllers\Admin\DoctorController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\SignupController;
+use App\Http\Controllers\Doctor\AppointmentController as DoctorAppointmentController;
+use App\Http\Controllers\Doctor\DashboardController as DoctorDashboardController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', function() {
-    return view('index');
-})->name('home');
-
-Route::get('/about-us', function() {
-    return view('about_us');
-})->name('about_us');
-
-Route::get('/contact-us', function() {
-    return view('contact_us');
-})->name('contact_us');
 
 
 // login & signup
-Route::get('/signup', [SignupController::class, 'showSignupForm'])->name('signup');
-Route::post('/signup', [SignupController::class, 'signup'])->name('signup.submit');
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
-
+Route::middleware('guest')->group(function () {
+    Route::get('/signup', [SignupController::class, 'showSignupForm'])->name('signup');
+    Route::post('/signup', [SignupController::class, 'signup'])->name('signup.submit');
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+});
 
 // logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
-Route::get('/find-doctors', [DoctorController::class, 'showdoc'])->name('find_doctors');
 
-Route::middleware(['auth'])->group(function() {
-    Route::get('/profile', function() {
-        return view('profile');
-    })->name('profile');
+Route::middleware('notAdminOrDoctor')->group(function () {
+    Route::get('/', HomeController::class)->name('home');
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/about-us', function () {
+        return view('about_us');
+    })->name('about_us');
 
-    Route::get('/dashboard/patients', [PatientController::class, 'index'])->name('patients.index');
+    Route::get('/contact-us', function () {
+        return view('contact_us');
+    })->name('contact_us');
+
+    Route::get('/find-doctors', [DoctorController::class, 'showdoc'])->name('find_doctors');
+
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/appointment/create', [AppointmentController::class, 'create'])->name('appointment.create');
+        Route::post('/appointment', [AppointmentController::class, 'store'])->name('appointment.store');
+        Route::get('/my-appointments', [AppointmentController::class, 'userAppoitments'])->name('user.appointments');
+    });
+});
 
 
-    Route::get('/dashboard/doctors', [DoctorController::class, 'index'])->name('doctors.index');
-    Route::get('/dashboard/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
-    Route::post('/dashboard/doctors', [DoctorController::class, 'store'])->name('doctors.store');
-    Route::delete('/dashboard/doctors/{doctor}', [DoctorController::class, 'destroy'])->name('doctors.destroy');
-    Route::get('/dashboard/doctors/{doctor}/edit', [DoctorController::class, 'edit'])->name('doctors.edit');
-    Route::put('/dashboard/doctors/{doctor}', [DoctorController::class, 'update'])->name('doctors.update');
 
+// Admin Routes
+Route::middleware(['auth', 'isAdmin'])->prefix('/admin')->name('admin.')->group(function () {
+    Route::get('/', DashboardController::class)->name('index');
 
-    Route::get('/appointment/create', [AppointmentController::class, 'create'])->name('appointment.create');
-    Route::post('/appointment', [AppointmentController::class, 'store'])->name('appointment.store');
+    Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
+
+    Route::get('/appoitments', [AdminAppointmentController::class, 'index'])->name('appointments.index');
+    Route::post('/appoitments/{appointment}', [AdminAppointmentController::class, 'update'])->name('appointments.update');
+
+    Route::controller(DoctorController::class)->group(function () {
+        Route::get('/doctors', 'index')->name('doctors.index');
+        Route::get('/doctors/create', 'create')->name('doctors.create');
+        Route::post('/doctors', 'store')->name('doctors.store');
+        Route::delete('/doctors/{doctor}', 'destroy')->name('doctors.destroy');
+        Route::get('/doctors/{doctor}/edit', 'edit')->name('doctors.edit');
+        Route::put('/doctors/{doctor}', 'update')->name('doctors.update');
+    });
+});
+
+Route::middleware(['auth', 'isDoctor'])->prefix('/doctor')->name('doctor.')->group(function () {
+    Route::get('/', DoctorDashboardController::class)->name('index');
+    Route::get('/appoitments', [DoctorAppointmentController::class, 'index'])->name('appointments.index');
+    Route::post('/appoitments/{appointment}', [DoctorAppointmentController::class, 'update'])->name('appointments.update');
+});
+
+Route::middleware('auth')->controller(ProfileController::class)->group(function () {
+    Route::get('/profile', 'index')->name('profile.index');
+    Route::get('/profile-edit', 'edit')->name('profile.edit');
+    Route::put('/profile-edit', 'update')->name('profile.update');
 });

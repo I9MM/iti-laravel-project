@@ -11,11 +11,14 @@
         <div class="header">
             <h1 class="page-title">Doctors</h1>
             <div class="user-info">
-                <span>Dr. Sarah Johnson</span>
-                <button class="logout-btn" id="logout-btn">
-                    <span>🚪</span>
-                    Logout
-                </button>
+                <span>{{ Auth::user()->name }}</span>
+                <form action="{{ route('logout') }} " method="POST" style="display: inline">
+                    @csrf
+                    <button class="logout-btn" type="submit">
+                        <span>🚪</span>
+                        Logout
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -41,15 +44,18 @@
                     @foreach ($doctors as $doctor)
                         <tr>
                             <td>{{ $doctor->id }}</td>
-                            <td> <img src="{{ asset('/storage/' . $doctor->photo) }}" alt="" srcset=""
-                                    style="height: 50px; width: 50px"> </td>
+                            <td> <img
+                                    src="{{ $doctor->photo ? asset('storage/' . $doctor->photo) : asset('assets/images/default.png') }}"
+                                    alt="" srcset=""
+                                    style="height: 50px; width: 50px; object-fit: cover; object-position: center; border-radius: 4px;">
+                            </td>
                             <td>{{ $doctor->name }}</td>
                             <td>{{ $doctor->specialization->name }}</td>
                             <td>{{ $doctor->email }}</td>
                             <td>{{ $doctor->phone ?? 'Not Available' }}</td>
                             <td>
-                                <a class="btn btn-edit" href="{{ route('doctors.edit', $doctor) }}">Edit</a>
-                                <form action="{{ route('doctors.destroy', $doctor) }}" method="POST"
+                                <a class="btn btn-edit" href="{{ route('admin.doctors.edit', $doctor) }}">Edit</a>
+                                <form action="{{ route('admin.doctors.destroy', $doctor) }}" method="POST"
                                     style="display: inline">
                                     @csrf
                                     @method('delete')

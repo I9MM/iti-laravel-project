@@ -339,3 +339,18 @@ box-shadow: 0 4px 16px rgba(26, 115, 232, 0.08);
   align-items: center;
 }
 
+.book-btn {
+  margin-top: 10px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.specialty {
+  color: #2563eb;
+  font-weight: 600;
+  margin: 5px 0;
+}

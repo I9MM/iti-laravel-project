@@ -158,3 +158,9 @@ body {
   text-align: center;
   margin: 50px auto;
 }
+
+.specialty {
+  color: #2563eb;
+  font-weight: 600;
+  margin: 5px 0;
+}

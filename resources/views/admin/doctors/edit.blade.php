@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Add Doctor')
+@section('title', 'Edit Doctors')
 
 @push('styles')
     <link rel="stylesheet" href="/css/Dashboard/add_doctor.css" />
@@ -10,13 +10,16 @@
     <main class="main-content">
         <!-- Header -->
         <div class="header">
-            <h1 class="page-title">Add Doctors</h1>
+            <h1 class="page-title">Edit Doctors</h1>
             <div class="user-info">
-                <span>Dr. Sarah Johnson</span>
-                <button class="logout-btn" id="logout-btn">
-                    <span>🚪</span>
-                    Logout
-                </button>
+                <span>{{ Auth::user()->name }}</span>
+                <form action="{{ route('logout') }} " method="POST" style="display: inline">
+                    @csrf
+                    <button class="logout-btn" type="submit">
+                        <span>🚪</span>
+                        Logout
+                    </button>
+                </form>
             </div>
         </div>
         @if ($errors->any())
@@ -28,45 +31,35 @@
                 </ul>
             </div>
         @endif
-        <form action="{{ route('doctors.store') }}" method="POST" novalidate enctype="multipart/form-data">
+        <form action="{{ route('admin.doctors.update', $doctor) }}" method="POST" novalidate enctype="multipart/form-data">
             @csrf
+            @method('put')
             <div class="form-group">
                 <label for="name" class="form-label">Name</label>
-                <input type="text" name="name" class="form-input" placeholder="Enter Doctor's name" />
+                <input type="text" name="name" class="form-input" placeholder="Enter Doctor's name" value="{{ $doctor->name }}"/>
             </div>
 
             <div class="form-group">
                 <label for="specialization" class="form-label">Specialization</label>
-                <input type="text" name="specialization" class="form-input" placeholder="Enter Doctor's specialization" />
+                <input type="text" name="specialization" class="form-input" placeholder="Enter Doctor's specialization" value="{{ $doctor->specialization->name }}"/>
             </div>
 
             <div class="form-group">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" name="email" class="form-input" placeholder="Enter Doctor's email" />
+                <input type="email" name="email" class="form-input" placeholder="Enter Doctor's email" value="{{ $doctor->email }}"/>
             </div>
 
             <div class="form-group">
                 <label for="phone" class="form-label">Phone</label>
-                <input type="phone" name="phone" class="form-input" placeholder="Enter Doctor's phone" />
+                <input type="phone" name="phone" class="form-input" placeholder="Enter Doctor's phone" value="{{ $doctor->phone }}"/>
             </div>
-            <div class="form-group">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" class="form-input" placeholder="Enter password" />
-            </div>
+            
             <div class="form-group">
                 <label for="photo" class="form-label">Image</label>
                 <input type="file" name="photo" class="form-input" placeholder="Enter Doctor's image" />
             </div>
-
-            <button type="submit" class="login-btn">Add</button>
+            
+            <button type="submit" class="login-btn">Edit</button>
         </form>
     </main>
 @endsection
-
-@push('scrips')
-    <script>
-        document.getElementById("logout-btn").addEventListener("click", function() {
-            window.location.href = "../login.html";
-        });
-    </script>
-@endpush

@@ -11,11 +11,14 @@
         <div class="header">
             <h1 class="page-title">Patients</h1>
             <div class="user-info">
-                <span>Dr. Sarah Johnson</span>
-                <button class="logout-btn" id="logout-btn">
-                    <span>🚪</span>
-                    Logout
-                </button>
+                <span>{{ Auth::user()->name }}</span>
+                <form action=" {{ route('logout') }} " method="POST" style="display: inline">
+                    @csrf
+                    <button class="logout-btn" type="submit">
+                        <span>🚪</span>
+                        Logout
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -28,7 +31,6 @@
                         <th>Phone</th>
                         <th>Email</th>
                         <th>Image</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="doctorsTableBody">
@@ -38,8 +40,9 @@
                             <td>{{ $patient->name }}</td>
                             <td>{{ $patient->phone }}</td>
                             <td>{{ $patient->email }}</td>
-                            <td> <img src="{{ asset('/storage/' . $patient->photo) }}" alt="" srcset="" style="height: 50px; width: 50px"> </td>
-                            <td>Actions</td>
+                            <td> <img src="{{ $patient->photo ? asset('storage/' . $patient->photo) : asset('assets/images/default.png') }}" alt=""
+                                    style="height: 50px; width: 50px; object-fit: cover; object-position: center; border-radius: 4px;">
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

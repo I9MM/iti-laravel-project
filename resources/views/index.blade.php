@@ -4,6 +4,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 @endpush
 
 @section('content')
@@ -60,7 +61,8 @@
                 <li>Personalized care plans</li>
                 <li>Emergency services available</li>
             </ul>
-            <button class="third-section-button" id="learn-more-btn"><a href="{{ route('about_us') }}">Learn More About Us</a></button>
+            <button class="third-section-button" id="learn-more-btn"><a href="{{ route('about_us') }}">Learn More About
+                    Us</a></button>
         </div>
     </section>
 
@@ -74,60 +76,22 @@
 
     <div class="fourth-section">
         <div class="fourth-section-card">
-            <div class="doctor-card">
-                <img src="/assets/images/doctor1.jpg" alt="doctor image" />
-                <h3>Dr. Sarah Johnson</h3>
-                <p>Cardiologist</p>
-                <div><span>⭐</span>4.9 (127)</div>
-                <div><span>📍</span>Medical Center East</div>
-                <div>
-                    <button class="fourth-section-button" id="doctor-btn">
-                        <a href="{{ route('appointment.create') }}">Book appointment</a>
+            @foreach ($doctors as $doctor)
+                <div class="doctor-card">
+                    <img src="{{ $doctor->photo ? asset('storage/' . $doctor->photo) : asset('assets/images/default.png') }}" alt="{{ $doctor->name }}" class="doctor-img" />
+                    <h3>{{ $doctor->name }}</h3>
+                    <p class="specialty">{{ $doctor->specialization->name }}</p>
+                    <button class="book-btn" onclick="bookAppointment({{ $doctor->id }})">
+                        Book Appointment
                     </button>
                 </div>
-            </div>
-            <div class="doctor-card">
-                <img src="/assets/images/doctor2.jpg" alt="doctor image" />
-                <h3>Dr. Michael Chen</h3>
-                <p>Neurologist</p>
-                <div><span>⭐</span>4.8 (98)</div>
-                <div><span>📍</span>Downtown Clinic</div>
-                <div>
-                    <button class="fourth-section-button" id="doctor-btn">
-                        <a href="{{ route('appointment.create') }}">Book appointment</a>
-                    </button>
-                </div>
-            </div>
-            <div class="doctor-card">
-                <img src="/assets/images/doctor3.jpg" alt="doctor image" />
-                <h3>Dr. Emily Rodriguez</h3>
-                <p>Dermatologist</p>
-                <div><span>⭐</span>4.9 (156)</div>
-                <div><span>📍</span>Children's Hospital</div>
-                <div>
-                    <button class="fourth-section-button" id="doctor-btn">
-                        <a href="{{ route('appointment.create') }}">Book appointment</a>
-                    </button>
-                </div>
-            </div>
-            <div class="doctor-card">
-                <img src="/assets/images/doctor4.jpg" alt="doctor image" />
-                <h3>Dr. David Kim</h3>
-                <p>Dermatologist</p>
-                <div><span>⭐</span>4.7 (89)</div>
-                <div><span>📍</span>Skin Care Center</div>
-                <div>
-                    <button class="fourth-section-button" id="doctor-btn">
-                        <a href="{{ route('appointment.create') }}">Book appointment</a>
-                    </button>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 
     <div class="fourth-section-after">
-        <button class="fourth-section-button-after" id="find_doctor-btn">
-            <a href="{{ route('find_doctors') }}">Find Doctors</a>
+        <button class="login-btn" id="find_doctor-btn" onclick="window.location.href='{{ route('find_doctors') }}'">
+            Find Doctors
         </button>
     </div>
 
@@ -202,40 +166,6 @@
         </div>
     </div>
 
-    <div class="middle-section">
-        <h2>
-            Read stories from our<span class="highlight"> happy patients</span>
-        </h2>
-        <p>
-            See what our patients say about their experience with our healthcare
-            services
-        </p>
-    </div>
-
-    <div class="faq-container">
-        <div class="faq-container-card">
-            <h3>How do book an appointment?</h3>
-            <p>
-                You can book an appointment by calling our office directly, using our
-                online booking system on our website, or by visiting us in person.
-            </p>
-        </div>
-        <div class="faq-container-card">
-            <h3>What should bring to my appointment?</h3>
-            <p>
-                Please bring a valid photo ID, your insurance card (if applicable), a
-                list of current medications, and any relevant medical records or
-                previous test results.
-            </p>
-        </div>
-        <div class="faq-container-card">
-            <h3>Do vou accept insurance?</h3>
-            <p>
-                We accept most major insurance plans. Please contact our office with
-                your insurance information to verify coverage and benefits.
-            </p>
-        </div>
-    </div>
 @endsection
 
 @push('scripts')
@@ -255,14 +185,39 @@
         document.getElementById("find-doctor-btn").addEventListener("click", function() {
             window.location.href = "{{ route('find_doctors') }}";
         });
-        const book = document.querySelectorAll('#doctor-btn');
-        const names = document.querySelectorAll('h3');
-        book.forEach(function(btn, index) {
-            btn.addEventListener('click', function(e) {
-                const doctorName = names[index].textContent;
-                localStorage.setItem('selectedDoctor', doctorName);
-                window.location.href = "{{ route('appointment.create') }}";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script>
+        function bookAppointment(doctorId) {
+            @if (!auth()->check())
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "You Should login First!",
+                    footer: '<a href="{{ route('home') }}">Ok</a>',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Login',
+                    timer: 10000,
+                    timerProgressBar: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "{{ route('login') }}";
+                    } else {
+                        window.location.href = "{{ route('home') }}";
+                    }
+                });
+            @else
+                window.location.href = "{{ route('appointment.create', ['doctor' => '']) }}" + doctorId;
+            @endif
+        }
+
+        @if (session('success'))
+            Swal.fire({
+                title: "Appointment Booked Successfully!",
+                icon: "success",
+                draggable: true,
+                confirmButtonColor: '#007bff'
             });
-        });
+        @endif
     </script>
 @endpush

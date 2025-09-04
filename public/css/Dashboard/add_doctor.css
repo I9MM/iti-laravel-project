@@ -82,3 +82,13 @@
   line-height: 1.6;
   margin-bottom: 40px;
 }
+
+.head {
+  background: white;
+  color: #333;
+  padding: 30px;
+  text-align: center;
+  position: relative;
+  border-bottom: 1px solid #e2e8f0;
+}
+

@@ -101,3 +101,68 @@
   background: #dc3545;
   color: white;
 }
+
+
+.btn-done {
+    background-color: #28a745; /* green */
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-pending {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-canceled {
+    background-color: #dc3545; /* red */
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-done:hover {
+    background-color: #218838;
+}
+
+.btn-pending:hover {
+    background: #138496;
+}
+
+.btn-canceled:hover {
+    background-color: #c82333;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Variations */
+.status-badge.pending {
+  background-color: #dcfce7; /* light green */
+  color: #92400e; /* dark amber */
+}
+
+.status-badge.done {
+  background-color: #fef9c3; /* light yellow */
+  color: #166534; /* dark green */
+}
+
+.status-badge.canceled {
+  background-color: #fee2e2; /* light red */
+  color: #991b1b; /* dark red */
+}

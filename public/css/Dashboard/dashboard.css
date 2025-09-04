@@ -259,12 +259,12 @@ body {
 
 /* Variations */
 .status-badge.pending {
-  background-color: #fef9c3; /* light yellow */
+  background-color: #dcfce7; /* light green */
   color: #92400e; /* dark amber */
 }
 
 .status-badge.done {
-  background-color: #dcfce7; /* light green */
+  background-color: #fef9c3; /* light yellow */
   color: #166534; /* dark green */
 }
 

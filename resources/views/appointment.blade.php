@@ -29,6 +29,7 @@
 
         <div class="doctor-info">
             <div class="doctor-name">{{ $doctor->name }}</div>
+            <div class="specialty">{{ $doctor->specialization->name }}</div>
         </div>
         <div class="form-section">
             <form id="appointment_form" method="POST" action="{{ route('appointment.store') }}">
