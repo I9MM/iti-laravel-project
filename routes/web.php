@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AppointmentController as AdminAppointmentController;
-use App\Http\Controllers\Admin\PatientController;
-use App\Http\Controllers\Admin\DoctorController;
+use App\Http\Controllers\Admin\PatientController as AdminPatientController;
+use App\Http\Controllers\Admin\DoctorController as AdminDoctorController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Auth\LoginController;
@@ -53,7 +53,7 @@ Route::middleware('notAdminOrDoctor')->group(function () {
 Route::middleware(['auth', 'isAdmin'])->prefix('/admin')->name('admin.')->group(function () {
     Route::get('/', DashboardController::class)->name('index');
 
-    Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
+    Route::get('/patients', [AdminPatientController::class, 'index'])->name('patients.index');
 
     Route::get('/appoitments', [AdminAppointmentController::class, 'index'])->name('appointments.index');
     Route::post('/appoitments/{appointment}', [AdminAppointmentController::class, 'update'])->name('appointments.update');
@@ -66,6 +66,9 @@ Route::middleware(['auth', 'isAdmin'])->prefix('/admin')->name('admin.')->group(
         Route::get('/doctors/{doctor}/edit', 'edit')->name('doctors.edit');
         Route::put('/doctors/{doctor}', 'update')->name('doctors.update');
     });
+
+        Route::resource('doctors', AdminDoctorController::class)->except(['show']);
+        Route::resource('patients', AdminPatientController::class)->only(['index','edit','update','destroy']);
 });
 
 Route::middleware(['auth', 'isDoctor'])->prefix('/doctor')->name('doctor.')->group(function () {
