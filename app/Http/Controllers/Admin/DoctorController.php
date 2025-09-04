@@ -36,7 +36,7 @@ class DoctorController extends Controller
         if ($request->has('photo')) {
             $ext = $request->file('photo')->getClientOriginalExtension();
             $photoName = $userValidated['email'] . '.' . $ext;
-            $photo = $request->file('photo')->storeAs('images', $photoName);
+            $photo = $request->file('photo')->storeAs('images', $photoName, 'public');
             $userValidated['photo'] = $photo;
         }
         
@@ -68,7 +68,7 @@ class DoctorController extends Controller
         if ($request->has('photo')) {
             $ext = $request->file('photo')->getClientOriginalExtension();
             $photoName = $userValidated['email'] . '.' . $ext;
-            $photo = $request->file('photo')->storeAs('images', $photoName);
+            $photo = $request->file('photo')->storeAs('images', $photoName, 'public');
             $userValidated['photo'] = $photo;
         }
 
@@ -78,10 +78,10 @@ class DoctorController extends Controller
     }
 
     public function destroy(User $doctor) {
-        if (!empty($doctor->photo) && Storage::exists($doctor->photo)) {
-            Storage::delete($doctor->photo);
-            if (empty(Storage::files('images'))) {
-                Storage::deleteDirectory('images');
+        if (!empty($doctor->photo) && Storage::disk('public')->exists($doctor->photo)) {
+            Storage::disk('public')->delete($doctor->photo);
+            if (empty(Storage::disk('public')->files('images'))) {
+                Storage::disk('public')->deleteDirectory('images');
             }
         }
         $doctor->delete();

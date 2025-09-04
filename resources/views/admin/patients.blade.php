@@ -40,7 +40,7 @@
                             <td>{{ $patient->name }}</td>
                             <td>{{ $patient->phone }}</td>
                             <td>{{ $patient->email }}</td>
-                            <td> <img src="{{ asset('storage/' . ($patient->photo?? 'images/default.png')) }}" alt=""
+                            <td> <img src="{{ $patient->photo ? asset('storage/' . $patient->photo) : asset('assets/images/default.png') }}" alt=""
                                     style="height: 50px; width: 50px; object-fit: cover; object-position: center; border-radius: 4px;">
                             </td>
                         </tr>

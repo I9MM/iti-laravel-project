@@ -35,7 +35,7 @@ class ProfileController extends Controller
         if ($request->has('photo')) {
             $ext = $request->file('photo')->getClientOriginalExtension();
             $photoName = $validated['email'] . '.' . $ext;
-            $photo = $request->file('photo')->storeAs('images', $photoName);
+            $photo = $request->file('photo')->storeAs('images', $photoName, 'public');
             $validated['photo'] = $photo;
         }
 

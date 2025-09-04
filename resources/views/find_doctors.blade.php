@@ -24,7 +24,7 @@
             <div class="doctors-list">
                 @foreach($doctors as $doctor)
                     <div class="doctor-card">
-                        <img src="{{ asset('storage/' . ($doctor->photo?? 'images/default.png')) }}" alt="{{ $doctor->name }}" class="doctor-img" />
+                        <img src="{{ $doctor->photo ? asset('storage/' . $doctor->photo) : asset('assets/images/default.png') }}" alt="{{ $doctor->name }}" class="doctor-img" />
                         <h3>{{ $doctor->name }}</h3>
                         <p class="specialty">{{ $doctor->specialization->name }}</p>
                         <button class="book-btn" onclick="bookAppointment({{ $doctor->id }})">

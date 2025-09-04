@@ -124,7 +124,7 @@
         <div class="profile-container">
             <!-- Profile Photo -->
             <div class="profile-photo">
-                <img src="{{ asset('storage/' . ($user->photo?? 'images/default.png')) }}"
+                <img src="{{ $user->photo ? asset('storage/' . $user->photo) : asset('assets/images/default.png') }}"
                      alt="Profile Photo">
             </div>
 
