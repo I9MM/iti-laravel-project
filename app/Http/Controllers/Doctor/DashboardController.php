@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace  App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
 
-use App\Models\User;
 use App\Models\Appointment;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -14,11 +14,9 @@ class DashboardController extends Controller
      */
     public function __invoke()
     {
-        return view('admin.index', [
-            'doctorsCount' => User::where('role', 'doctor')->count(),
-            'patientsCount' => User::where('role', 'patient')->count(),
-            'appointmentsCount' => Appointment::count(),
-            'recentAppointments' => Appointment::with(['doctor', 'patient'])
+        return view('doctor.index', [
+            'appointmentsCount' => Appointment::where('doctor_id', Auth::id())->count(),
+            'recentAppointments' => Appointment::where('doctor_id', Auth::id())->with(['doctor', 'patient'])
                                                ->latest()
                                                ->take(5)
                                                ->get(),

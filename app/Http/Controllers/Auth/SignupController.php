@@ -12,7 +12,7 @@ class SignupController extends Controller
 {
     public function showSignupForm()
     {
-        return view('signup');
+        return view('auth.signup');
     }
 
     public function signup(Request $request)
@@ -39,7 +39,7 @@ class SignupController extends Controller
         if ($request->hasFile('image')) {
             $ext = $request->file('image')->getClientOriginalExtension();
             $imageName = $request->email . '.' . $ext;
-            $imagePath = $request->file('image')->storeAs('users', $imageName,'public');
+            $imagePath = $request->file('image')->storeAs('images', $imageName,'public');
         }
 
         $user = \App\Models\User::create([

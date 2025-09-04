@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class isAdmin
+class notAdminOrDoctor
 {
     /**
      * Handle an incoming request.
@@ -16,12 +16,10 @@ class isAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->role === 'admin') {
-            return $next($request);
-        } if (Auth::user()->role === 'doctor') { 
-            return redirect()->route('doctor.index');
-        }else {
-            return redirect()->route('home');
+        if (Auth::check()) {
+            if (Auth::user()->role === 'admin') return redirect()->route('admin.index');
+            else if (Auth::user()->role === 'doctor') return redirect()->route('doctor.index');
         }
+        return $next($request);
     }
 }

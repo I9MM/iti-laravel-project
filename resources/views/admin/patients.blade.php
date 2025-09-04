@@ -31,7 +31,6 @@
                         <th>Phone</th>
                         <th>Email</th>
                         <th>Image</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="doctorsTableBody">
@@ -41,8 +40,9 @@
                             <td>{{ $patient->name }}</td>
                             <td>{{ $patient->phone }}</td>
                             <td>{{ $patient->email }}</td>
-                            <td> <img src="{{ asset('/storage/' . $patient->photo) }}" alt="" srcset="" style="height: 50px; width: 50px"> </td>
-                            <td>Actions</td>
+                            <td> <img src="{{ asset('storage/' . ($patient->photo?? 'images/default.png')) }}" alt=""
+                                    style="height: 50px; width: 50px; object-fit: cover; object-position: center; border-radius: 4px;">
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

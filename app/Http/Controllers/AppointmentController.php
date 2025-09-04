@@ -7,6 +7,7 @@ use App\Models\Doctor;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class AppointmentController extends Controller
 {
@@ -55,5 +56,10 @@ class AppointmentController extends Controller
         ]);
 
         return redirect()->route('find_doctors')->with('success', 'Appointment Booked Successfully');
+    }
+
+    public function userAppoitments() {
+        $appointments = Appointment::where('patient_id', Auth::id())->with(['doctor', 'patient'])->get();
+        return view('myAppointments', compact('appointments'));
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace  App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Specialization;
@@ -55,7 +55,7 @@ class DoctorController extends Controller
     public function update(Request $request, User $doctor) {
         $userValidated = $request->validate([
             'name' => 'required',
-            'email' => ['required', 'unique:users,email,' . $doctor->id],
+            'email' => ['required', 'email', 'unique:users,email,' . $doctor->id],
             'phone' => ['nullable', 'regex:/^(010|011|012|015)\d{8}$/', 'unique:users,phone,' . $doctor->id],
             'photo' => 'nullable|image',
         ]);
