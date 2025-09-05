@@ -4,6 +4,7 @@
 DocPlace is a web app to find doctors and book appointments.  
 Patients can sign up, search doctors by specialization, and book visits.  
 Admins manage doctors and patients with a dashboard.
+Doctors manage their appointments with a dashboard.
 
 ---
 
@@ -76,13 +77,15 @@ Admins manage doctors and patients with a dashboard.
 - POST /logout → logout (`logout`)  
 - GET /appointment/create?doctor={id} → appointment form (`appointment.create`) — auth only  
 - POST /appointment → store (`appointment.store`) — auth only  
-- GET /dashboard → admin area (`dashboard`) — auth + isAdmin
+- GET /admin → admin area (`admin.index`) — auth + isAdmin
+- GET /doctor → doctor area (`doctor.index`) — auth + isDoctor
 
 ---
 ## 🔒 Auth Rules
 
 - **After login:**
-  - If `role` is `admin` or `doctor` → redirect to `/dashboard`
+  - If `role` is `admin` → redirect to `/admin`
+  - If `role` is `doctor` → redirect to `/doctor`
   - Otherwise → redirect to `/` (home)
 - **Logout:**  
   - `POST /logout` clears the session
