@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\isAdmin;
 use App\Http\Middleware\isDoctor;
+use App\Http\Middleware\NoCache;
 use App\Http\Middleware\notAdminOrDoctor;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'notAdminOrDoctor' => notAdminOrDoctor::class,
             'isDoctor' => isDoctor::class,
         ]);
+        $middleware->append(['NoCache' => NoCache::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
