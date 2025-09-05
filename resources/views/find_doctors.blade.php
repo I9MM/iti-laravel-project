@@ -13,9 +13,16 @@
             <h2 class="title">Find and Book Your <span>Doctor</span></h2>
 
             <div class="doctors-list">
-                @foreach($doctors as $doctor)
+                @foreach ($doctors as $doctor)
                     <div class="doctor-card">
-                        <img src="{{ $doctor->photo ? asset('storage/' . $doctor->photo) : asset('assets/images/default.png') }}" alt="{{ $doctor->name }}" class="doctor-img" />
+                        @php
+                            $photoPath =
+                                $doctor->photo && Storage::disk('public')->exists($doctor->photo)
+                                    ? asset('storage/' . $doctor->photo)
+                                    : asset('assets/images/default.png');
+                        @endphp
+                        <img src="{{ $photoPath }}"
+                            alt="{{ $doctor->name }}" class="doctor-img" />
                         <h3>{{ $doctor->name }}</h3>
                         <p class="specialty">{{ $doctor->specialization->name }}</p>
                         <button class="book-btn" onclick="bookAppointment({{ $doctor->id }})">
@@ -32,7 +39,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script>
         function bookAppointment(doctorId) {
-            @if(!auth()->check())
+            @if (!auth()->check())
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
@@ -54,7 +61,7 @@
             @endif
         }
 
-        @if(session('success'))
+        @if (session('success'))
             Swal.fire({
                 title: "Appointment Booked Successfully!",
                 icon: "success",

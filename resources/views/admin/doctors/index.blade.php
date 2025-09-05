@@ -44,9 +44,13 @@
                     @foreach ($doctors as $doctor)
                         <tr>
                             <td>{{ $doctor->id }}</td>
-                            <td> <img
-                                    src="{{ $doctor->photo ? asset('storage/' . $doctor->photo) : asset('assets/images/default.png') }}"
-                                    alt="" srcset=""
+                            @php
+                                $photoPath =
+                                    $doctor->photo && Storage::disk('public')->exists($doctor->photo)
+                                        ? asset('storage/' . $doctor->photo)
+                                        : asset('assets/images/default.png');
+                            @endphp
+                            <td> <img src="{{ $photoPath }}" alt="" srcset=""
                                     style="height: 50px; width: 50px; object-fit: cover; object-position: center; border-radius: 4px;">
                             </td>
                             <td>{{ $doctor->name }}</td>

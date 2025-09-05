@@ -55,11 +55,6 @@
             <div class="form-group">
                 <label for="photo" class="form-label">Photo</label>
                 <input type="file" name="photo" class="form-input" />
-                @if($patient->photo)
-                    <div style="margin-top:8px;">
-                        <img src="{{ asset('storage/' . $patient->photo) }}" alt="photo" style="height:80px;">
-                    </div>
-                @endif
             </div>
 
             <button type="submit" class="login-btn">Save</button>

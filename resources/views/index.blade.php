@@ -78,7 +78,14 @@
         <div class="fourth-section-card">
             @foreach ($doctors as $doctor)
                 <div class="doctor-card">
-                    <img src="{{ $doctor->photo ? asset('storage/' . $doctor->photo) : asset('assets/images/default.png') }}" alt="{{ $doctor->name }}" class="doctor-img" />
+                    @php
+                        $photoPath =
+                            $doctor->photo && Storage::disk('public')->exists($doctor->photo)
+                                ? asset('storage/' . $doctor->photo)
+                                : asset('assets/images/default.png');
+                    @endphp
+                    <img src="{{ $photoPath }}"
+                        alt="{{ $doctor->name }}" class="doctor-img" />
                     <h3>{{ $doctor->name }}</h3>
                     <p class="specialty">{{ $doctor->specialization->name }}</p>
                     <button class="book-btn" onclick="bookAppointment({{ $doctor->id }})">

@@ -47,9 +47,14 @@
                             <td>{{ $patient->name }}</td>
                             <td>{{ $patient->phone ?? 'Not Available' }}</td>
                             <td>{{ $patient->email }}</td>
+                            @php
+                                $photoPath =
+                                    $patient->photo && Storage::disk('public')->exists($patient->photo)
+                                        ? asset('storage/' . $patient->photo)
+                                        : asset('assets/images/default.png');
+                            @endphp
                             <td>
-                                <img src="{{ $patient->photo ? asset('storage/' . $patient->photo) : asset('assets/images/default.png') }}"
-                                     alt=""
+                                <img src="{{ $photoPath }}" alt=""
                                      style="height: 50px; width: 50px; object-fit: cover; object-position: center; border-radius: 4px;">
                             </td>
                             <td>

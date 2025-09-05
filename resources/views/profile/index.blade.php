@@ -123,9 +123,14 @@
         @endif
         <div class="profile-container">
             <!-- Profile Photo -->
+            @php
+                $photoPath =
+                    $user->photo && Storage::disk('public')->exists($user->photo)
+                        ? asset('storage/' . $user->photo)
+                        : asset('assets/images/default.png');
+            @endphp
             <div class="profile-photo">
-                <img src="{{ $user->photo ? asset('storage/' . $user->photo) : asset('assets/images/default.png') }}"
-                     alt="Profile Photo">
+                <img src="{{ $photoPath }}" alt="Profile Photo">
             </div>
 
             <!-- Profile Details -->
