@@ -1,117 +1,139 @@
-# DocPlace — Project README
+# DocPlace — Project Documentation
 
-A concise, professional README for developers and DevOps to set up and run the DocPlace Laravel application.
-
-## Overview
-DocPlace is a Laravel-based appointment booking system for doctors and patients. Core features:
-- Public pages: Home, About, Contact, Find Doctors
-- Authentication: Signup, Login, Logout
-- Appointment booking (protected by auth checks)
-- Admin dashboard for management
-
-## Requirements
-- PHP 8.1+ (tested on PHP 8.2.29)
-- Composer
-- MySQL / MariaDB
-- Node.js + npm (optional, for frontend assets)
-- Git (recommended)
-
-## Quick Setup (Windows)
-1. Clone repo and install dependencies:
-   - composer:
-     ```
-     composer install
-     ```
-   - node (if using frontend tooling):
-     ```
-     npm install
-     npm run dev
-     ```
-2. Environment:
-   ```
-   copy .env.example .env
-   ```
-   Edit `.env` and set DB credentials.
-3. Generate app key:
-   ```
-   php artisan key:generate
-   ```
-4. Migrate and optionally seed:
-   ```
-   php artisan migrate
-   php artisan db:seed
-   ```
-   (Create an admin user via seeder or manually if needed.)
-5. Serve:
-   ```
-   php artisan serve
-   ```
-   Visit: http://127.0.0.1:8000
-
-## Important Routes
-- Public:
-  - GET / → home (route name: `home`)
-  - GET /about-us → about (`about_us`)
-  - GET /contact-us → contact (`contact_us`)
-  - GET /find-doctors → find doctors (`find_doctors`)
-- Auth:
-  - GET /signup → show sign up (`signup`)
-  - POST /signup → register (`signup.submit`)
-  - GET /login → show login (`login`)
-  - POST /login → authenticate (`login.submit`)
-  - POST /logout → logout (`logout`)
-- Appointments:
-  - GET /appointment/create?doctor={id} → create form (`appointment.create`)
-  - POST /appointment → store (`appointment.store`)
-- Dashboard (protected by `auth`):
-  - GET /dashboard (`dashboard`) and related admin routes
-
-## Auth / Redirect Behavior
-- After login:
-  - Admins → redirected to `/dashboard`
-  - Non-admins → redirected to `/` (home)
-- Logout uses POST to `/logout` which terminates the session and redirects to `/`.
-
-## Frontend Alerts & Booking UX
-- SweetAlert2 is used for success/error popups.
-- Booking from `find_doctors`:
-  - If user is not authenticated, JS shows a SweetAlert:
-    - Confirm button labeled "Login" directs to the login page.
-    - Footer link or timeout (10s) redirects to `find_doctors`.
-  - If authenticated, user is taken to appointment form.
-- Success alert after booking is a draggable SweetAlert with styled confirm button (blue).
-
-## Data / Validation Notes
-- appointments.appointment_at must be a valid DATETIME; the controller validates date/time and rejects unrealistic years (>9999).
-- Ensure Appointment model has the correct `$fillable` fields and the DB column types match (appointment_at -> datetime).
-
-## Troubleshooting (Common Issues)
-- BindingResolutionException for controller class:
-  - Ensure `use` statements in `routes/web.php` reference the correct controller namespaces.
-- Blade syntax errors:
-  - Remove stray `<?php` from Blade files; Blade templates must start with HTML/Blade directives.
-- Login appears with query string (?email=...):
-  - Ensure login form uses POST and action points to `route('login.submit')`.
-- "Call to undefined method ...::index()":
-  - Ensure controllers referenced by routes implement the referenced methods (e.g., `DashboardController@index`).
-
-## Recommended Improvements
-- Move validation logic into FormRequest classes.
-- Add a seeder to create a default admin user:
-  - `php artisan make:seeder AdminUserSeeder`
-- Add automated tests for auth and appointment flows.
-- Use Laravel Jetstream/ Breeze if richer auth scaffolding is desired.
-
-## Useful Commands
-- Run migrations: `php artisan migrate`
-- Run seeders: `php artisan db:seed`
-- Start dev server: `php artisan serve`
-- Create middleware: `php artisan make:middleware CheckRole`
-- Make controller: `php artisan make:controller ExampleController`
+## 📌 Project Summary
+DocPlace is a web app to find doctors and book appointments.  
+Patients can sign up, search doctors by specialization, and book visits.  
+Admins manage doctors and patients with a dashboard.
 
 ---
 
-If you want, I can:
-- Add an Admin seeder file.
-- Add FormRequests for appointment validation.
-- Add a short CONTRIBUTING.md for pull request workflow.
+## 🚀 Main Features
+- Public pages: Home, About, Contact, Find Doctors  
+- Authentication: Signup, Login, Logout  
+- Appointments: logged-in users can book visits  
+- Admin dashboard: manage doctors,patients and Appointments
+- Doctor dashboard: manage his/her Appointments and Doctor's profile
+- Patient Profile: manage his/her profile
+---
+
+## 🛠 Tech Stack
+- Backend: PHP 8.2, Laravel  
+- Frontend: Blade templates, Vanilla JS  
+- Database: MySQL / MariaDB  
+- Storage: public disk for images
+- Git/Github
+---
+
+## ⚙ Requirements
+- PHP 8.1+ and Composer  
+- MySQL or MariaDB  
+- Node.js + npm (optional for assets)  
+- Git
+---
+
+## ⚡ Quick Setup (Any OS)
+
+1. **Open terminal in project folder:**
+  ```sh
+  cd /path/to/iti-laravel-project
+  ```
+2. **Install PHP packages:**
+  ```sh
+  composer install
+  ```
+3. **Copy env and edit DB settings:**
+  ```sh
+  cp .env.example .env
+  ```
+  Edit `.env` values for `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`
+4. **Generate app key:**
+  ```sh
+  php artisan key:generate
+  ```
+5. **Run migrations:**
+  ```sh
+  php artisan migrate
+  ```
+6. **(Optional) Seed data:**
+  ```sh
+  php artisan db:seed
+  ```
+7. **Serve:**
+  ```sh
+  php artisan serve
+  ```
+  Open: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+*Note: Use `cp` for Linux/macOS, `copy` for Windows. All commands work on any OS with PHP, Composer, and MySQL/MariaDB installed.*
+
+---
+
+## ⚡ Important Routes (short)
+- GET / → home (name: `home`)  
+- GET /find-doctors → find doctors (`find_doctors`) — public  
+- GET /signup, POST /signup → register (`signup`, `signup.submit`)  
+- GET /login, POST /login → login (`login`, `login.submit`)  
+- POST /logout → logout (`logout`)  
+- GET /appointment/create?doctor={id} → appointment form (`appointment.create`) — auth only  
+- POST /appointment → store (`appointment.store`) — auth only  
+- GET /dashboard → admin area (`dashboard`) — auth + isAdmin
+
+---
+## 🔒 Auth Rules
+
+- **After login:**
+  - If `role` is `admin` or `doctor` → redirect to `/dashboard`
+  - Otherwise → redirect to `/` (home)
+- **Logout:**  
+  - `POST /logout` clears the session
+
+---
+
+## 📅 Appointment Rules
+- Allowed dates: from today up to 2 years from today  
+- Validation:
+  - appointment date must be >= today
+  - appointment date must be <= today + 2 years
+  - combined datetime must not exceed end of (today + 2 years)
+---
+
+## 🗂 Data Notes
+- Doctors: rows in `users` with `role = 'doctor'`  
+- Specializations: `specializations` table with `id, user_id, name`  
+  - Specialization belongsTo User (user_id)  
+  - User hasOne Specialization (by user_id)  
+- Appointments table fields: `appointment_at` (datetime), `doctor_id`, `patient_id`, `status`
+
+---
+
+## 📁 Files to Check First
+- `routes/web.php` — all routes and controller imports  
+- `app/Http/Controllers/Auth/LoginController.php` — login redirect logic  
+- `app/Http/Controllers/AppointmentController.php` — date validation (2 years)  
+- `app/Http/Controllers/Admin/PatientController.php` — edit/delete logic  
+- `resources/views/find_doctors.blade.php` — specialization display  
+- `resources/views/auth/login.blade.php`, `signup.blade.php` — forms use POST
+
+---
+## 👥 Team & Contributions
+
+- **Back-End Team:**  
+  - Mohamed Mamdouh — Dashboard, Home, Profile
+  - Youssef Al-Ansari — Authentication, middleware, routes, Find Doctors, appointments
+- **Database Team:**  
+  - Youssef Abu Zaid — Database design, JS for front-end  
+- **Front-End Team:**  
+  - Youssef Michael — Home, About, Signup, Login, Dashboard
+  - Bafly Hany — Find Doctors, Contact
+---
+
+## 🌍 GitHub Workflow
+1. git add .  
+2. git commit -m "Describe changes"  
+3. git push origin branch-name
+
+If repo not created:
+1. git init  
+2. git remote add origin <repo-url>  
+3. git push -u origin main
+---
