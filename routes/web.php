@@ -38,12 +38,11 @@ Route::middleware('notAdminOrDoctor')->group(function () {
         return view('contact_us');
     })->name('contact_us');
 
-    Route::get('/find-doctors', [DoctorController::class, 'showdoc'])->name('find_doctors');
+    Route::get('/find-doctors', [AdminDoctorController::class, 'showdoc'])->name('find_doctors');
 
     Route::middleware(['auth'])->group(function () {
         Route::get('/appointment/create', [AppointmentController::class, 'create'])->name('appointment.create');
         Route::post('/appointment', [AppointmentController::class, 'store'])->name('appointment.store');
-        Route::get('/my-appointments', [AppointmentController::class, 'userAppoitments'])->name('user.appointments');
     });
 });
 
@@ -55,30 +54,25 @@ Route::middleware(['auth', 'isAdmin'])->prefix('/admin')->name('admin.')->group(
 
     Route::get('/patients', [AdminPatientController::class, 'index'])->name('patients.index');
 
-    Route::get('/appoitments', [AdminAppointmentController::class, 'index'])->name('appointments.index');
-    Route::post('/appoitments/{appointment}', [AdminAppointmentController::class, 'update'])->name('appointments.update');
+    Route::get('/appointments', [AdminAppointmentController::class, 'index'])->name('appointments.index');
+    Route::post('/appointments/{appointment}', [AdminAppointmentController::class, 'update'])->name('appointments.update');
 
-    Route::controller(DoctorController::class)->group(function () {
-        Route::get('/doctors', 'index')->name('doctors.index');
-        Route::get('/doctors/create', 'create')->name('doctors.create');
-        Route::post('/doctors', 'store')->name('doctors.store');
-        Route::delete('/doctors/{doctor}', 'destroy')->name('doctors.destroy');
-        Route::get('/doctors/{doctor}/edit', 'edit')->name('doctors.edit');
-        Route::put('/doctors/{doctor}', 'update')->name('doctors.update');
-    });
-
-        Route::resource('doctors', AdminDoctorController::class)->except(['show']);
-        Route::resource('patients', AdminPatientController::class)->only(['index','edit','update','destroy']);
+    Route::resource('doctors', AdminDoctorController::class)->except(['show']);
+    Route::resource('patients', AdminPatientController::class)->only(['index','edit','update','destroy']);
 });
 
 Route::middleware(['auth', 'isDoctor'])->prefix('/doctor')->name('doctor.')->group(function () {
     Route::get('/', DoctorDashboardController::class)->name('index');
-    Route::get('/appoitments', [DoctorAppointmentController::class, 'index'])->name('appointments.index');
-    Route::post('/appoitments/{appointment}', [DoctorAppointmentController::class, 'update'])->name('appointments.update');
+    Route::get('/appointments', [DoctorAppointmentController::class, 'index'])->name('appointments.index');
+    Route::post('/appointments/{appointment}', [DoctorAppointmentController::class, 'update'])->name('appointments.update');
 });
 
 Route::middleware('auth')->controller(ProfileController::class)->group(function () {
     Route::get('/profile', 'index')->name('profile.index');
     Route::get('/profile-edit', 'edit')->name('profile.edit');
-    Route::put('/profile-edit', 'update')->name('profile.update');
+    Route::put('/profile', 'update')->name('profile.update');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/my-appointments', [AppointmentController::class, 'userAppointments'])->name('user.appointments');
 });

@@ -61,8 +61,15 @@ class AppointmentController extends Controller
         return redirect()->route('find_doctors')->with('success', 'Appointment Booked Successfully');
     }
 
-    public function userAppoitments() {
-        $appointments = Appointment::where('patient_id', Auth::id())->with(['doctor', 'patient'])->get();
+    public function userAppointments()
+    {
+        $user = Auth::user();
+
+        $appointments = Appointment::where('patient_id', $user->id)
+            ->with(['doctor', 'patient']) 
+            ->orderBy('appointment_at', 'desc')
+            ->get();
+
         return view('myAppointments', compact('appointments'));
     }
 }

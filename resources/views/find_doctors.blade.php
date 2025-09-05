@@ -5,15 +5,6 @@
 @push('styles')
     <link rel="stylesheet" href="/css/find_doctors.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <style>
-        .swal2-confirm {
-            background-color: #007bff !important;
-            border-color: #007bff !important;
-        }
-        .swal2-confirm:hover {
-            background-color: #0056b3 !important;
-        }
-    </style>
 @endpush
 
 @section('content')

@@ -119,7 +119,7 @@ Admins manage doctors and patients with a dashboard.
 
 - **Back-End Team:**  
   - Mohamed Mamdouh — Dashboard, Home, Profile , middleware
-  - Youssef Al-Ansari — Authentication, routes, Find Doctors, appointments , middleware
+  - Youssef Al-Ansari — Authentication, Find Doctors, appointments , middleware
 - **Database Team:**  
   - Youssef Abu Zaid — Database design, JS for front-end  
 - **Front-End Team:**  
